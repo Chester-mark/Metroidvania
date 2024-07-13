@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     //Object Reference
     private Rigidbody2D rb;
     private Animator anim;
-    //private BoxCollider2D collider;
 
     //Horizontal Movements
     [Header("Horizontal Movement Setting:")]
@@ -17,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
+    [SerializeField] GameObject dash_effect;
     [Space(5)]
 
     //Vertical Movements
@@ -59,7 +59,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        //collider = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
         pState = GetComponent<PlayerStateList>();
         gravity = rb.gravityScale;
@@ -68,19 +67,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GetInput();
         UpdateJump();
+
         if (pState.dashing) return;
         Movement();
         Jump();
         StartDash();
-        //test
+    }
+
+    private void GetInput() 
+    {
+        xAxis = Input.GetAxisRaw("Horizontal");
     }
 
     //Movement Manager
     private void Movement()
     {
-
-        xAxis = Input.GetAxisRaw("Horizontal");
 
         rb.velocity = new Vector2 (walk_speed * xAxis, rb.velocity.y);
         anim.SetBool("Walking", rb.velocity.x != 0 && IsGrounded());
@@ -103,7 +106,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     //Dash Coroutine
     IEnumerator Dash() 
     {
@@ -112,6 +114,7 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Dashing");
         rb.gravityScale = 0;
         rb.velocity = new Vector2(transform.localScale.x * dashSpeed, 0);
+        if (IsGrounded()) Instantiate(dash_effect, transform);
         yield return new WaitForSeconds(dashTime);
         rb.gravityScale = gravity;
         pState.dashing = false;
@@ -151,7 +154,6 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             pState.jumping = false;
-
         }
 
         if (!pState.jumping) 

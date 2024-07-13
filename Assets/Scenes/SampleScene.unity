@@ -283,7 +283,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.000000029802322, y: -0.5480989}
+  m_Offset: {x: 0.000000029802322, y: -0.51971495}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -294,7 +294,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8120802, y: 1.4071596}
+  m_Size: {x: 0.8120802, y: 1.3503916}
   m_EdgeRadius: 0
 --- !u!212 &1081507694
 SpriteRenderer:
@@ -404,9 +404,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walk_speed: 10
-  dashSpeed: 70
+  dashSpeed: 20
   dashTime: 0.2
   dashCooldown: 0.35
+  dash_effect: {fileID: 5764041324984741800, guid: 1f364b51a2583b14f87464d2da029005, type: 3}
   jump_force: 20
   jumpBufferFrames: 8
   coyoteTime: 0.1
