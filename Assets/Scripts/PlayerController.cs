@@ -11,21 +11,30 @@ public class PlayerController : MonoBehaviour
     //Horizontal Movements
     [Header("Horizontal Movement Setting:")]
     [SerializeField] private float walk_speed = 0;
-    private bool canDash = true;
-    private bool dashed;
+
+    private bool canDash = true, dashed;
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
     [SerializeField] GameObject dash_effect;
     [Space(5)]
 
+    [SerializeField] private float timeBetweenAttack;
+    private float timeSinceAttack;
+
+
     //Vertical Movements
     [Header("Vertical Movement Settings:")]
-    [SerializeField] private float jump_force = 0;
+
+    private float gravity;
+    [SerializeField] private float jump_force = 0f;
+
     private int jumpBufferCounter = 0;
     [SerializeField] private int jumpBufferFrames;
-    private float coyoteTimeCounter = 0;
+
+    private float coyoteTimeCounter = 0f;
     [SerializeField] private float coyoteTime;
+
     private int airJumpCounter = 0;
     [SerializeField] private int maxJumps;
     [Space(5)]
@@ -37,13 +46,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckX = 0.5f;
     [SerializeField] private LayerMask IsGround;
 
-    //Movement Reference
+    //Input Reference
     private float xAxis;
-    private float gravity;
-
+    private bool attack =false;
+    
     //Player Reference
     public static PlayerController Instance;
-    PlayerStateList pState;
+    private PlayerStateList pState;
 
     private void Awake()
     {
@@ -74,11 +83,13 @@ public class PlayerController : MonoBehaviour
         Movement();
         Jump();
         StartDash();
+        Attack();
     }
 
     private void GetInput() 
     {
         xAxis = Input.GetAxisRaw("Horizontal");
+        attack = Input.GetButtonDown("Attack");
     }
 
     //Movement Manager
@@ -194,6 +205,18 @@ public class PlayerController : MonoBehaviour
         else
         {
             jumpBufferCounter--;
+        }
+
+    }
+
+    private void Attack() 
+    {
+        timeSinceAttack += Time.deltaTime;
+
+        if (attack && timeSinceAttack >= timeBetweenAttack) {
+            timeSinceAttack = 0;
+            anim.SetTrigger("Attacking");
+        
         }
 
     }

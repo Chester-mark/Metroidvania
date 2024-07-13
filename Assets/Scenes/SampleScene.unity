@@ -408,6 +408,7 @@ MonoBehaviour:
   dashTime: 0.2
   dashCooldown: 0.35
   dash_effect: {fileID: 5764041324984741800, guid: 1f364b51a2583b14f87464d2da029005, type: 3}
+  timeBetweenAttack: 0.3
   jump_force: 20
   jumpBufferFrames: 8
   coyoteTime: 0.1
