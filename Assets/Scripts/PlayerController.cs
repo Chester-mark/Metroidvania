@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     //Horizontal Movements
     [Header("Horizontal Movement Setting:")]
+
     [SerializeField] private float walk_speed = 0;
 
     private bool canDash = true, dashed;
@@ -18,10 +20,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashCooldown;
     [SerializeField] GameObject dash_effect;
     [Space(5)]
-
-    [SerializeField] private float timeBetweenAttack;
-    private float timeSinceAttack;
-
 
     //Vertical Movements
     [Header("Vertical Movement Settings:")]
@@ -45,6 +43,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckY = 0.2f;
     [SerializeField] private float groundCheckX = 0.5f;
     [SerializeField] private LayerMask IsGround;
+    [Space(5)]
+
+    //Attack Setting
+    [Header("Attack Settings:")]
+    [SerializeField] private Transform SideAttackTransfrom;
+    [SerializeField] private Vector2 SideAttackArea;
+
+    [SerializeField] private Transform UpAttackTransfrom;
+    [SerializeField] private Vector2 UpAttackArea;
+
+    [SerializeField] private Transform DownAttackTransfrom;
+    [SerializeField] private Vector2 DownAttackArea;
+
+    [SerializeField] private float timeBetweenAttack;
+    private float timeSinceAttack;
+    [Space(5)]
 
     //Input Reference
     private float xAxis;
@@ -72,6 +86,16 @@ public class PlayerController : MonoBehaviour
         pState = GetComponent<PlayerStateList>();
         gravity = rb.gravityScale;
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(SideAttackTransfrom.position, SideAttackArea);
+        Gizmos.DrawWireCube(DownAttackTransfrom.position, UpAttackArea);
+        Gizmos.DrawWireCube(UpAttackTransfrom.position, DownAttackArea);
+    }
+
+
 
     // Update is called once per frame
     void Update()
