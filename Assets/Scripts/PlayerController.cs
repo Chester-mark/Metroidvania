@@ -59,8 +59,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private LayerMask attackableLayer;
     [SerializeField] private float timeBetweenAttack;
-
     private float timeSinceAttack;
+
     [SerializeField] private float attackDamage;
     [SerializeField] private GameObject swordSlashEffect;
     [Space(5)]
@@ -75,6 +75,11 @@ public class PlayerController : MonoBehaviour
     private int stepsXRecoiled, stepsYRecoiled;
     [Space(5)]
 
+    [Header("Health Settings")]
+    public int health;
+    public int maxHealth;
+    [Space(5)]
+
     //Input Reference
     private float xAxis;
     private float yAxis;
@@ -82,7 +87,7 @@ public class PlayerController : MonoBehaviour
     
     //Player Reference
     public static PlayerController Instance;
-    private PlayerStateList pState;
+    [HideInInspector]public PlayerStateList pState;
 
     private void Awake()
     {
@@ -94,6 +99,7 @@ public class PlayerController : MonoBehaviour
         {
             Instance = this;
         }
+        Health = maxHealth;
     }
     private void Start()
     {
@@ -111,8 +117,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireCube(UpAttackTransfrom.position, DownAttackArea);
     }
 
-
-
     // Update is called once per frame
     void Update()
     {
@@ -124,6 +128,11 @@ public class PlayerController : MonoBehaviour
         Jump();
         StartDash();
         Attack();
+    }
+
+    private void FixedUpdate()
+    {
+        if (pState.dashing) return;
         Recoil();
     }
 
@@ -133,6 +142,7 @@ public class PlayerController : MonoBehaviour
         yAxis = Input.GetAxisRaw("Vertical");
         attack = Input.GetButtonDown("Attack");
     }
+
 
     //Movement Manager
     private void Movement()
@@ -200,6 +210,33 @@ public class PlayerController : MonoBehaviour
             return true;
             
         } else return false;
+    }
+
+    //Damage Player
+    public void TakeDamage(float _damage)
+    {
+        Health -= Mathf.RoundToInt(_damage);
+        StartCoroutine(StopTakingDamage());
+    }
+
+    IEnumerator StopTakingDamage()
+    {
+        pState.invincible = true;
+        anim.SetTrigger("TakeDamage");
+        yield return new WaitForSeconds(1f);
+        pState.invincible = false;
+    }
+
+    public int Health
+    {
+        get { return health; }
+        set
+        {
+            if (health != value)
+            {
+                health = Mathf.Clamp(value, 0, maxHealth);
+            }
+        }
     }
 
     //Jump Mechanics
@@ -310,6 +347,7 @@ public class PlayerController : MonoBehaviour
         _slashEffect.transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
     }
 
+    //Recoil Functions
     private void Recoil()
     {
         if (pState.recoilingX)
@@ -360,7 +398,6 @@ public class PlayerController : MonoBehaviour
             StopRecoilY();
         }
     }
-
     private void StopRecoilX()
     {
         stepsXRecoiled = 0;

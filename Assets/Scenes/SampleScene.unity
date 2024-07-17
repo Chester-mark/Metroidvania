@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 538373563}
   - component: {fileID: 538373566}
   - component: {fileID: 538373565}
+  - component: {fileID: 538373568}
   - component: {fileID: 538373567}
   m_Layer: 7
   m_Name: Enemy
@@ -341,7 +342,7 @@ Transform:
   m_GameObject: {fileID: 538373562}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.79, y: -0.56, z: 0}
+  m_LocalPosition: {x: 1.84, y: 0.42, z: 0}
   m_LocalScale: {x: 0.9467483, y: 1.5324379, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -379,7 +380,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.000000059604645, y: -0.016112119}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -390,7 +391,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9188634, y: 0.96777576}
   m_EdgeRadius: 0
 --- !u!50 &538373566
 Rigidbody2D:
@@ -415,9 +416,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &538373567
 MonoBehaviour:
@@ -428,13 +429,61 @@ MonoBehaviour:
   m_GameObject: {fileID: 538373562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68ca783bde617e34ebac6b0437dbbbc5, type: 3}
+  m_Script: {fileID: 11500000, guid: b8879c75497123d40b5f19dc43d39927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  recoilLength: 0.5
-  recoilFactor: 1
+  recoilLength: 1
+  recoilFactor: 30
   isRecoiling: 0
+  player: {fileID: 1081507697}
+  speed: 3
+  damage: 1
+--- !u!61 &538373568
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538373562}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &819335979
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +532,7 @@ GameObject:
   - component: {fileID: 1081507698}
   m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -644,7 +693,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walk_speed: 10
-  attack_walk_speed: 3
   dashSpeed: 20
   dashTime: 0.2
   dashCooldown: 0.35
@@ -668,13 +716,16 @@ MonoBehaviour:
   attackableLayer:
     serializedVersion: 2
     m_Bits: 128
-  timeBetweenAttack: 0.3
+  timeBetweenAttack: 1
   attackDamage: 1
   swordSlashEffect: {fileID: 5953596580180487992, guid: 5776823339e94704b882abe3babffaa6, type: 3}
   recoilXSteps: 5
   recoilYSteps: 5
-  recoilXSpeed: 100
-  recoilYSpeed: 100
+  recoilXSpeed: 20
+  recoilYSpeed: 20
+  health: 10
+  maxHealth: 10
+  pState: {fileID: 0}
 --- !u!95 &1081507698
 Animator:
   serializedVersion: 5
@@ -713,6 +764,7 @@ MonoBehaviour:
   recoilingX: 0
   recoilingY: 0
   lookingRight: 1
+  invincible: 0
 --- !u!1 &1131072306
 GameObject:
   m_ObjectHideFlags: 0
